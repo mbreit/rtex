@@ -1,22 +1,7 @@
 require 'rubygems'
 require 'rake'
-
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "rtex"
-    gem.summary = "Build PDFs from Ruby with LaTeX"
-    gem.description = "Build PDFs from Ruby with LaTeX (with commandline and Rack support)"
-    gem.email = "bruce@codefluency.com"
-    gem.homepage = "http://github.com/bruce/rtex"
-    gem.authors = ['Bruce Williams', 'Wiebe Cazemier']
-    gem.add_development_dependency "shoulda"
-    gem.add_development_dependency "flexmock"
-  end
-  Jeweler::GemcutterTasks.new
-rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
-end
+require 'bundler'
+Bundler::GemHelper.install_tasks
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
