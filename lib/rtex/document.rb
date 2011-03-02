@@ -28,7 +28,8 @@ module RTeX
         # 
         :shell_redirect => nil,
         # Temporary Directory
-        :tempdir => Dir.tmpdir
+        :tempdir => Dir.tmpdir,
+        :asset_dir => nil
       }
     end
         
@@ -103,6 +104,7 @@ module RTeX
     def process_pdf_from(input, &file_handler)
       Tempdir.open(@options[:tempdir]) do |tempdir|
         prepare input
+        copy_assets tempdir
         if generating?
           preprocess! if preprocessing?
           process!
@@ -112,6 +114,17 @@ module RTeX
           yield full_path_in(tempdir.path)
         else
           result_as_string
+        end
+      end
+    end
+    
+    # Copy assets from @options[:asset_dir] to tempdir
+    def copy_assets(tempdir)
+      return unless @options[:asset_dir]
+      @options[:asset_dir].each_entry do |entry|
+        file = @options[:asset_dir] + entry
+        if file.file?
+          FileUtils.cp(file, tempdir.path)
         end
       end
     end
